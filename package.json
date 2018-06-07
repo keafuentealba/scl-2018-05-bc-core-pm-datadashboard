@@ -18,5 +18,9 @@
     "mocha": "^5.1.1",
     "nyc": "^11.7.1",
     "opener": "^1.4.3"
-  }
+  },
+  "devDependencies": {
+    "eslint-config-google": "^0.9.1"
+  },
+  "eslintIgnore": ["test/fixtures.js"]
 }
