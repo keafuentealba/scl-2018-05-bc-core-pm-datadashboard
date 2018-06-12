@@ -1,4 +1,4 @@
-module.exports = {
+
   "parserOptions": {
     "ecmaVersion": 6
   },
@@ -26,4 +26,3 @@ module.exports = {
     "indent": [1, 2],
     "no-array-constructor": 1
   }
-};
