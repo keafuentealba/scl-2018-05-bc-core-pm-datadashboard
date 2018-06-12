@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Data Dashboard</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>segunda pagina</title>
   </head>
   <body>
-    <script src="main.js"></script>
-
-    <div id="root">
-
+    <div id="general">
       <div id="country">
         <label>Pais</label>
         <select id="enterCountry">
@@ -20,16 +16,17 @@
           <option value="pe">Brasil</option>
         </select>
       </div>
-
-      <div id="ButtonExecute">
-          <input  type="button" onclick="" value="Ejecutar" />
-      </div>
-
-      <div id="piede pagina">
-        <p>holiholhi</p>
-      </div>
-
     </div>
-      <script src="data.js"></script>
+    <div id="selections">
+      <label>Filtrar por</label>
+      <select id="tipo">
+        <option value="option">Opciones</option>
+        <option value="general">General</option>
+        <option value="año">Año de egreso</option>
+        <option value="alumnos">Alumnos</option>
+      </select>
+    </div>
+    <script src="data.js"></script>
+
   </body>
 </html>
