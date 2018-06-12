@@ -1,4 +1,4 @@
-{
+
   "parserOptions": {
     "ecmaVersion": 6
   },
@@ -26,4 +26,3 @@
     "indent": [1, 2],
     "no-array-constructor": 1
   }
-}
