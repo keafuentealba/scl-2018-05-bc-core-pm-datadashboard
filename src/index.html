@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Data Dashboard</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -10,26 +11,24 @@
 
     <div id="root">
 
-      <div id="country">
-        <label>Pais</label>
-        <select id="enterCountry">
-          <option value="pe">Opciones</option>
-          <option value="cl">Chile</option>
-          <option value="ar">Mexico</option>
-          <option value="pe">Peru</option>
-          <option value="pe">Brasil</option>
-        </select>
+      <div class="row">
+        <label>Cohort</label>
+        <select id="cohort"></select>
       </div>
 
-      <div id="ButtonExecute">
-          <input  type="button" onclick="" value="Ejecutar" />
+      <div class="row">
+        <div class="col-12">
+          <button type="submit" id="btn" onClick="executeStats()" ><i class="fas fa-globe"></i>ver</button>
+        </div>
+
       </div>
 
-      <div id="piede pagina">
+      <div id="pie de pagina">
         <p>holiholhi</p>
       </div>
-
     </div>
+      <script src="https://use.fontawesome.com/7873633050.js"></script>
       <script src="data.js"></script>
+      <script src="main.js"></script>
   </body>
 </html>
