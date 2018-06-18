@@ -28,7 +28,8 @@ const getUserStats = (cohortId) => {
     let cohorts = responses[0].filter((cohort) => {
       return cohort.id === cohortId;
     });
-    console.log(users, progress,cohorts);
+    coursesId = Object.keys(cohorts[0].coursesIndex);
+    computeUsersStats(users, progress, coursesId)
   }).catch((e) => {
     console.log(e);
     console.log('cohort no encontrado');
@@ -36,5 +37,5 @@ const getUserStats = (cohortId) => {
 }
 
 window.computeUsersStats = (users, progress, courses) => {
-
+  console.log(users, progress, courses)
 }
