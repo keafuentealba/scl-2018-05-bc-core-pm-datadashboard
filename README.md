@@ -179,7 +179,7 @@ desearías implementar si tuvieras tiempo ilimitado para hackear.
 
 Tu diseño debe seguir los fundamentos de visual design, como:
 contraste, alineación, jerarquía, entre otros. Tip: revisa el contenido de UX
-de la unidad de visual design.
+de la unidad de visual design.....
 
 ### Implementación de la Interfaz de Usuario (HTML/CSS/JS)
 
