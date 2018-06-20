@@ -37,37 +37,39 @@ const getUserStats = (cohortId) => {
 }
 
 window.computeUsersStats = (users, progress, courses) => {
-  console.log(users, progress, courses);
-  for(let i = 0; i < users.length; i++){
-    const user_progress = progress[users[i].id];
-    let total_percent = 0;
-    let courses = Object.keys(user_progress).map(key => user_progress[key]);
-    console.log(courses);
+  for(let i = 0; i < users.length; i++){ //recorre usuarios
+    const user_progress = progress[users[i].id]; //obtiene progres para cada usuario
+    let courses_progress = Object.keys(user_progress).map((key) => { //obtiene el progreso de cada curso
+      return user_progress[key];
+    });
+
     let parts = [];
-    courses.forEach((course) => {
-      const parts_aux = Object.keys(course.units).map((key) => {
+    courses_progress.forEach((course) => { //itera por el progreso de cada curso
+      const parts_aux = Object.keys(course.units).map((key) => { // aplanar parts
         return Object.keys(course.units[key].parts).map((key_parts) => {
           return course.units[key].parts[key_parts]
         });
       });
       parts = parts.concat.apply([], parts_aux);
     });
-    const exercises = parts.filter((part) => {return part.type === 'practice'});
-    const reads = parts.filter((part) => {return part.type === 'read'});
-    const quizzes = parts.filter((part) => {return part.type === 'quiz'});
-    users[i].stats = {
+
+    const exercises = parts.filter((part) => {return part.type === 'practice'}); //retorna array con parts tipo practice (exercises)
+    const reads = parts.filter((part) => {return part.type === 'read'});//retorna array con parts tipo read
+    const quizzes = parts.filter((part) => {return part.type === 'quiz'});//retorna array con parts tipo quiz
+
+    users[i].stats = { //le asigna a el usuario un objeto llamado stats
       exercises: {
-        total: exercises.length,
-        completed: exercises.filter(excercise => excercise.completed === 1).length
+        total: exercises.length, //total de exercises
+        completed: exercises.filter(excercise => excercise.completed === 1).length //filtra solo exercises completados y los cuenta
       },
       reads: {
-        total: reads.length,
-        completed: reads.filter(read => read.completed === 1).length,
+        total: reads.length, //total reads
+        completed: reads.filter(read => read.completed === 1).length //cuenta solo reads completados
       },
       quizzes: {
-        total: quizzes.length,
-        completed: quizzes.filter(quiz => quiz.completed === 1).length,
-        scoreSum: quizzes.reduce((previous, current) => {
+        total: quizzes.length, //total quiz
+        completed: quizzes.filter(quiz => quiz.completed === 1).length, //cuenta solo quiz completados
+        scoreSum: quizzes.reduce((previous, current) => { //sumatoria de puntaje (score)
           let score = 0;
           if(current.score !== undefined){
             score = current.score;
@@ -75,14 +77,15 @@ window.computeUsersStats = (users, progress, courses) => {
           return previous + score}, 0),
       }
     };
-    users[i].stats.exercises.percent = parseInt(users[i].stats.exercises.completed / users[i].stats.exercises.total * 100);
-    users[i].stats.reads.percent = parseInt(users[i].stats.reads.completed / users[i].stats.reads.total * 100);
-    users[i].stats.quizzes.percent = parseInt(users[i].stats.quizzes.completed / users[i].stats.quizzes.total * 100);
-    users[i].stats.quizzes.scoreAvg = parseInt(users[i].stats.quizzes.scoreSum / users[i].stats.quizzes.total)
-    users[i].stats.percent = courses.reduce((previous, current) => {
+
+    users[i].stats.exercises.percent = Math.round(users[i].stats.exercises.completed / users[i].stats.exercises.total * 100);
+    users[i].stats.reads.percent = Math.round(users[i].stats.reads.completed / users[i].stats.reads.total * 100);
+    users[i].stats.quizzes.percent = Math.round(users[i].stats.quizzes.completed / users[i].stats.quizzes.total * 100);
+    users[i].stats.quizzes.scoreAvg = Math.round(users[i].stats.quizzes.scoreSum / users[i].stats.quizzes.completed)
+    users[i].stats.percent = courses_progress.reduce((previous, current) => { //recorre cada progreso de curso y calcula su procentaje
       return previous + current.percent;
     }, 0) / courses.length
   }
-  console.log(progress["00hJv4mzvqM3D9kBy3dfxoJyFV82"]);
-  console.log(users);
+
+  return users;
 }
