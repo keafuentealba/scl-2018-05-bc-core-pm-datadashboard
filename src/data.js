@@ -29,7 +29,8 @@ const getUserStats = (cohortId) => {
       return cohort.id === cohortId;
     });
     coursesId = Object.keys(cohorts[0].coursesIndex);
-    computeUsersStats(users, progress, coursesId)
+    result = computeUsersStats(users, progress, coursesId)
+    sortUsers(result, 'name', 'DESC');
   }).catch((e) => {
     console.log(e);
     console.log('cohort no encontrado');
@@ -53,7 +54,16 @@ window.computeUsersStats = (users, progress, courses) => {
       parts = parts.concat.apply([], parts_aux);
     });
 
-    const exercises = parts.filter((part) => {return part.type === 'practice'}); //retorna array con parts tipo practice (exercises)
+    let exercises = [];
+    const exercisesObject = parts.filter((part) => {return part.type === 'practice'})
+      .filter(practice => practice.exercises !== undefined)
+      .map(practice => practice.exercises);
+    exercisesObject.forEach((exercise) => {
+      const exercises_aux = Object.keys(exercise).map((key) => {
+        return exercise[key];
+      });
+      exercises = exercises.concat.apply([], exercises_aux);
+    }); //retorna array con parts tipo practice (exercises)
     const reads = parts.filter((part) => {return part.type === 'read'});//retorna array con parts tipo read
     const quizzes = parts.filter((part) => {return part.type === 'quiz'});//retorna array con parts tipo quiz
 
@@ -88,4 +98,25 @@ window.computeUsersStats = (users, progress, courses) => {
   }
 
   return users;
+}
+
+window.sortUsers = (users, orderBy, orderDirection) => {
+  users.sort((a, b) => {
+    const aValue = a[orderBy].toLowerCase();
+    const bValue = b[orderBy].toLowerCase();
+    if(aValue > bValue){
+      return 1;
+    }
+    if(aValue < bValue){
+      return -1;
+    }
+    return 0;
+  });
+
+  if(orderDirection === 'DESC'){
+    users = users.reverse();
+  }
+
+  console.log(users);
+  return users
 }
