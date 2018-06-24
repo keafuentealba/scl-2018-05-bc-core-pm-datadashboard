@@ -3,31 +3,112 @@
   <head>
     <meta charset="utf-8">
     <title>Data Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <script src="main.js"></script>
 
-    <div id="root">
 
-      <div class="row">
-        <label>Cohort</label>
-        <select id="cohort"></select>
+  <div id="root">
+
+    <div class="row">
+        <div id="logo" class="col-md-2">
+          <img src="/src/img/logovectorizado.png" class="img-fluid" alt="responsive image">
+        </div>
+        <div class="nav col-md-10">
+          <nav class="navbar">
+            <div class="col-10 banner">
+              <h1>Dashboard</h1>
+            </div>
+          </nav>
+        </div>
       </div>
 
-      <div class="row">
-        <div class="col-12">
-          <button type="submit" id="btn" onclick="executeStats()" ><i class="fas fa-globe"></i>ver</button>
+      <div class="container form-group">
+          <div class="row">
+              <div class="col-md-2 offset-md-2">
+                <label>Cohorts</label>
+              </div>
+              <div class="col-md-8">
+                <select id="cohort" class="form-control"></select>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-2 offset-md-2">
+                <label>Ordenar por</label>
+              </div>
+              <div class="col-md-6">
+                <select id="orderBy" class="form-control">
+                  <option value="name">Nombre</option>
+                  <option value="percentTotal">% Completitus total</option>
+                  <option value="percentExercise">% Ejercicios completados</option>
+                  <option value="percentQuizzes">% Quizzes Completados</option>
+                  <option value="averageScoreQuizz">Puntuación promedio quizzes</option>
+                  <option value="percentReads">% Lecturas completadas</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <select id="order" class="form-control">
+                  <option value="asc">Ascendente</option>
+                  <option value="desc">Descendente</option>
+                </select>
+              </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2 offset-md-2">
+              <label>Filtrar</label>
+            </div>
+            <div class="col-md-8">
+              <input id="filter" class="form-control" type="text"/>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-10 offset-md-2">
+              <button type="submit" class="btn" onclick="executeStats()"><i class="fas fa-globe"></i> ver</button>
+            </div>
+          </div>
+      </div>
+
+      <section class="containerTable">
+
+        <div class="row">
+          <div class=" col-12 col-md-12 headerUser">
+            <div class="row">
+              <div class=" col-2 col-md-2">
+                <span>Usuario</span>
+              </div>
+              <div class="col-md-2 center">
+                <span class="headerUserList">%Total</span>
+              </div>
+              <div class="col-md-2 center">
+                <span class="headerUserList">%Ejercicio completados</span>
+              </div>
+              <div class="col-md-2 center">
+                <span class="headerUserList">Promedio de quizzes completado</span>
+              </div>
+              <div class="col-md-2 center">
+                <span class="headerUserList">%Quizzes completados</span>
+              </div>
+              <div class="col-md-2 center">
+                <span class="headerUserList">%Lecturas completas</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-      </div>
+        <div id="users"></div>
 
-      <div id="pie de pagina">
-        <p>holiholhi</p>
-      </div>
-    </div>
+      </section>
+
+  </div>
+
       <script src="https://use.fontawesome.com/7873633050.js"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
       <script src="data.js"></script>
       <script src="main.js"></script>
   </body>

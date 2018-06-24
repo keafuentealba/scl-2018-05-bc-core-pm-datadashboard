@@ -1,0 +1,55 @@
+body{
+  font-family: 'Open Sans', sans-serif;
+}
+
+*{
+  margin: 0px;
+  padding: 0px;
+}
+
+.container-fluid h1{
+  font-size: 10px;
+  text-align: left;
+
+
+}
+.container-fluid img {
+  width: 100%;
+  padding-top: 1em;
+
+}
+
+.nav{
+position: relative;
+background-color: #ffe521;
+}
+
+#logo{
+  background-color: #ffffff;
+  padding-top: 1em;
+}
+
+.banner h1{
+  font-size: 25px;
+}
+
+.container-fluid h2{
+  font-size: 15px;
+  top:5px;
+  background-color: #ffe521;
+}
+
+.container{
+  margin: 2em;
+}
+
+.containerTable {
+  padding-top: 1em;
+}
+
+.even {
+  background-color: #DADFE6;
+}
+ .containerTable{
+   margin: 5em;
+ }

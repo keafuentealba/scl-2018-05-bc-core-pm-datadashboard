@@ -12,9 +12,8 @@ const extractCohortsIds = () => {
   });
 }
 
-const getUserStats = (cohortId) => {
-  console.log(cohortId);
-  Promise.all([
+const getUserStats = (cohortId, orderBy, orderDirection, filter) => {
+  return Promise.all([
     fetch('../data/cohorts.json'),
     fetch('../data/cohorts/' + cohortId + '/progress.json'),
     fetch('../data/cohorts/' + cohortId + '/users.json')
@@ -28,9 +27,18 @@ const getUserStats = (cohortId) => {
     let cohorts = responses[0].filter((cohort) => {
       return cohort.id === cohortId;
     });
-    coursesId = Object.keys(cohorts[0].coursesIndex);
-    result = computeUsersStats(users, progress, coursesId)
-    sortUsers(result, 'name', 'DESC');
+    let result = processCohortData({
+      cohort: cohorts[0],
+      cohortData: {
+        users: users,
+        progress: progress
+      },
+      orderBy: orderBy,
+      orderDirection: orderDirection,
+      search: filter
+    });
+    return result;
+
   }).catch((e) => {
     console.log(e);
     console.log('cohort no encontrado');
@@ -51,7 +59,7 @@ window.computeUsersStats = (users, progress, courses) => {
           return course.units[key].parts[key_parts]
         });
       });
-      parts = parts.concat.apply([], parts_aux);
+      parts = parts.concat.apply([], parts_aux); //mezcla los array devueltos de parts_aux en el array parts
     });
 
     let exercises = [];
@@ -88,35 +96,118 @@ window.computeUsersStats = (users, progress, courses) => {
       }
     };
 
-    users[i].stats.exercises.percent = Math.round(users[i].stats.exercises.completed / users[i].stats.exercises.total * 100);
-    users[i].stats.reads.percent = Math.round(users[i].stats.reads.completed / users[i].stats.reads.total * 100);
-    users[i].stats.quizzes.percent = Math.round(users[i].stats.quizzes.completed / users[i].stats.quizzes.total * 100);
-    users[i].stats.quizzes.scoreAvg = Math.round(users[i].stats.quizzes.scoreSum / users[i].stats.quizzes.completed)
+    users[i].stats.exercises.percent = users[i].stats.exercises.total ? Math.round(users[i].stats.exercises.completed / users[i].stats.exercises.total * 100) : 0;
+    users[i].stats.reads.percent = users[i].stats.reads.total ? Math.round(users[i].stats.reads.completed / users[i].stats.reads.total * 100) : 0;
+    users[i].stats.quizzes.percent = users[i].stats.quizzes.total ? Math.round(users[i].stats.quizzes.completed / users[i].stats.quizzes.total * 100) : 0;
+    users[i].stats.quizzes.scoreAvg = users[i].stats.quizzes.completed ? Math.round(users[i].stats.quizzes.scoreSum / users[i].stats.quizzes.completed) : 0;
     users[i].stats.percent = courses_progress.reduce((previous, current) => { //recorre cada progreso de curso y calcula su procentaje
       return previous + current.percent;
     }, 0) / courses.length
   }
 
+
+
   return users;
 }
 
-window.sortUsers = (users, orderBy, orderDirection) => {
-  users.sort((a, b) => {
-    const aValue = a[orderBy].toLowerCase();
-    const bValue = b[orderBy].toLowerCase();
-    if(aValue > bValue){
-      return 1;
-    }
-    if(aValue < bValue){
-      return -1;
-    }
-    return 0;
-  });
+window.sortUsers = (users, orderBy, orderDirection) => {//ordena de forma ascendente
+  let result = [];
 
-  if(orderDirection === 'DESC'){
-    users = users.reverse();
+  if(orderBy === 'name'){
+    result = users.sort((a, b) => {
+      if(a.name > b.name){
+        return 1;
+      }
+      if(a.name < b.name){
+        return -1;
+      }
+      return 0;
+    });
   }
 
-  console.log(users);
-  return users
+  if(orderBy === 'percentTotal'){//compara la eleccion de select con percent total
+    result = users.sort((a, b) => {
+      if(a.percent > b.percent){//si 'a' es mayor a 'b' retorna '1'
+        return 1;
+      }
+      if(a.percent < b.percent){//si 'a' es menor 'b' retorna -1'
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  if(orderBy === 'percentExercise'){//
+    result = users.sort((a, b) => {
+      if(a.stats.exercises.percent > b.stats.exercises.percent){
+        return 1;
+      }
+      if(a.stats.exercises.percent < b.stats.exercises.percent){
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  if(orderBy === 'percentQuizzes'){
+    result = users.sort((a, b) => {
+      if(a.stats.quizzes.percent > b.stats.quizzes.percent){
+        return 1;
+      }
+      if(a.stats.quizzes.percent < b.stats.quizzes.percent){
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  if(orderBy === 'averageScoreQuizz'){
+    result = users.sort((a, b) => {
+      if(a.stats.quizzes.scoreAvg > b.stats.quizzes.scoreAvg){
+        return 1;
+      }
+      if(a.stats.quizzes.scoreAvg < b.stats.quizzes.scoreAvg){
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  if(orderBy === 'percentReads'){
+    result = users.sort((a, b) => {
+      if(a.stats.reads.percent > b.stats.reads.percent){
+        return 1;
+      }
+      if(a.stats.reads.percent < b.stats.reads.percent){
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  if(orderDirection === 'DESC'){//ordena de forma descendentes
+    result = result.reverse();
+  }
+
+  return result;
+}
+
+window.filterUsers = (users, search) => {// filtra
+  return users.filter((user) => {
+    return user.name.toLowerCase() === search.toLowerCase();//lleva a minusculas los nombres para filtrar
+  });
+}
+
+window.processCohortData = (options) => {//funcion que toma la informacion que se le asigna y las llama
+  coursesId = Object.keys(options.cohort.coursesIndex);
+  let result = computeUsersStats(options.cohortData.users, options.cohortData.progress, coursesId);
+
+  result = sortUsers(result, options.orderBy, options.orderDirection);
+
+  if(options.search !== ''){
+    result = filterUsers(result, options.search);
+  }
+
+  return result;
+
 }
