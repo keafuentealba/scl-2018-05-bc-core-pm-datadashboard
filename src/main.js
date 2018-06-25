@@ -13,7 +13,7 @@ window.onload = () => {//funcion que se ejecuta cuando carga la venta
   });
 
 }
-window.executeStats = () => {
+window.executeStats = () => {// funcion que llama id de index
   let id = document.getElementById('cohort').value;
   let orderBy = document.getElementById('orderBy').value;
   let orderDirection = document.getElementById('order').value.toUpperCase();
@@ -25,17 +25,17 @@ window.executeStats = () => {
     let userList = document.getElementById('users');
     userList.innerHTML = '';
 
-    for(let i = 0; i < users.length; i++){
-      let userRow = document.createElement('div');
+    for(let i = 0; i < users.length; i++){//este for recorre users
+      let userRow = document.createElement('div');//creo por dom div y row para user
       userRow.classList.add('row');
 
-      if(i % 2 === 0){
-        userRow.classList.add('even');
+      if(i % 2 === 0){//revisa si es par o inpar para agregar en la tabla la clase con el color
+        userRow.classList.add('even');//si es para agrega la clase 'even' (css esta en gris)
       }
 
-      let userName = document.createElement('div');
-      userName.classList.add('col-md-2');
-      userName.innerHTML = users[i]['name'];
+      let userName = document.createElement('div');//creo un dic por medio dom
+      userName.classList.add('col-md-2');//agrego un class col  por dom
+      userName.innerHTML = users[i]['name'];//indica que esto es formato html (para obtener la posisicon sub i del arreglo user y finalmente obtener nombre)
       userRow.appendChild(userName);
 
       let totalPercent = document.createElement('div');

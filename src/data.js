@@ -53,7 +53,7 @@ window.computeUsersStats = (users, progress, courses) => {
     });
 
     let parts = [];
-    courses_progress.forEach((course) => { //itera por el progreso de cada curso
+    courses_progress.forEach((course) => { //itera por el progreso de cada curso  (utilizo forEach para iterar por el arreglo)
       const parts_aux = Object.keys(course.units).map((key) => { // aplanar parts
         return Object.keys(course.units[key].parts).map((key_parts) => {
           return course.units[key].parts[key_parts]
