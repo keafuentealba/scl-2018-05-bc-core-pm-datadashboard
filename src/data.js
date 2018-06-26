@@ -22,7 +22,7 @@ const getUserStats = (cohortId, orderBy, orderDirection, filter) => {
       return response.json();
     }));
   }).then((responses) => {
-    let users = responses[2];
+    let users = responses[2];//asigna respectivas respuestas y ubicacion 
     let progress = responses[1];
     let cohorts = responses[0].filter((cohort) => {
       return cohort.id === cohortId;
@@ -47,7 +47,7 @@ const getUserStats = (cohortId, orderBy, orderDirection, filter) => {
 
 window.computeUsersStats = (users, progress, courses) => {
   for(let i = 0; i < users.length; i++){ //recorre usuarios
-    const user_progress = progress[users[i].id]; //obtiene progres para cada usuario
+    const user_progress = progress[users[i].id]; //obtiene progress para cada usuario
     let courses_progress = Object.keys(user_progress).map((key) => { //obtiene el progreso de cada curso
       return user_progress[key];
     });

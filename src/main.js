@@ -36,7 +36,7 @@ window.executeStats = () => {// funcion que llama id de index
       let userName = document.createElement('div');//creo un dic por medio dom
       userName.classList.add('col-md-2');//agrego un class col  por dom
       userName.innerHTML = users[i]['name'];//indica que esto es formato html (para obtener la posisicon sub i del arreglo user y finalmente obtener nombre)
-      userRow.appendChild(userName);
+      userRow.appendChild(userName);//agrega un nuevo nodo al elemento ()
 
       let totalPercent = document.createElement('div');
       totalPercent.classList.add('col-md-2');
